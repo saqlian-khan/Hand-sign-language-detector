@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Hand Sign Detection</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('features') }}">Features</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="content">
+        <h1>Contact Us</h1>
+        <p>Have questions? Feel free to reach out to us at:</p>
+        <div class="contact-icons">
+            <!-- Email Icon -->
+            <a href="mailto:thesack004@gmail.com" class="icon">
+                <i class="fas fa-envelope"></i>
+            </a>
+        
+            <!-- Phone Icon -->
+            <a href="tel:+918179218634" class="icon">
+                <i class="fas fa-phone-alt"></i>
+            </a>
+        
+            <!-- Instagram Icon -->
+            <a href="https://www.instagram.com/youknowsack" class="icon" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
+        
+    </section>
+
+    <!-- Footer -->
+    <footer>&copy; 2024 Sign Language Detection. All rights reserved.</footer> 
+</body>
+</html>

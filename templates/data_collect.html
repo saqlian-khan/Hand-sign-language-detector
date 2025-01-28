@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Collection</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('features') }}">Features</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Content Section -->
+    <section class="content">
+        <h1>Data Collection</h1>
+
+        <!-- Video Stream -->
+        <div id="videoContainer">
+            <img id="video-stream" src="{{ url_for('video_feed1') }}" style="display: none;" width="640" height="480">   
+            <img id="placeholderImage" src="{{ url_for('static', filename='images/background.jpg') }}" alt="Placeholder" width="640" height="480">
+        </div>
+
+        <!-- Control buttons -->
+        <div class="controls">      
+            <button id="start-video-btn">Start Video</button>
+            <button id="stop-video-btn" style="display:none;">Stop Video</button>
+            <button id="collect-btn" style="display:none;">Start Collecting</button>
+        </div>
+
+        <!-- Status -->
+        <div id="status">Press the button to start collecting images.</div>
+    </section>
+
+    <script>
+        const startVideoButton = document.getElementById('start-video-btn');
+        const stopVideoButton = document.getElementById('stop-video-btn');
+        const collectButton = document.getElementById('collect-btn');
+        const statusText = document.getElementById('status');
+
+        // Start video feed
+        startVideoButton.addEventListener('click', function() {
+            fetch('/start_video_feed', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    statusText.textContent = data.status;
+                    startVideoButton.style.display = 'none';
+                    stopVideoButton.style.display = 'inline';
+                    collectButton.style.display = 'inline';
+                }).catch(error => console.error('Error:', error));
+        });
+
+        // Stop video feed
+        stopVideoButton.addEventListener('click', function() {
+            fetch('/stop_video_feed', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    statusText.textContent = data.status;
+                    stopVideoButton.style.display = 'none';
+                    startVideoButton.style.display = 'inline';
+                    collectButton.style.display = 'none';
+                }).catch(error => console.error('Error:', error));
+        });
+
+        // Function to start collecting images
+        collectButton.addEventListener('click', function() {
+            const classId = prompt("Enter class ID for image collection:");
+
+            if (classId) {
+                fetch('/collect_data', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ class_id: classId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    statusText.textContent = data.message;
+                }).catch(error => console.error('Error:', error));
+            }
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer>&copy; 2024 Sign Language Detection. All rights reserved.</footer>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

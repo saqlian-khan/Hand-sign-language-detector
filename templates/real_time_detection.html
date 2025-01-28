@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Sign Language Detection</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('features') }}">Features</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+        </ul>
+    </nav>
+    <section class="content">
+        <h1>Hand Sign Detection</h1>
+        
+        <!-- Video Container with Border -->
+        <div id="videoContainer">
+            <img id="placeholderImage" src="{{ url_for('static', filename='images/background.jpg') }}" alt="Placeholder" width="640" height="480">
+            <img id="videoStream" src="" alt="Live Video Stream" style="display: none;" width="640" height="480">
+        </div>
+
+        <!-- Controls -->
+    <div class="controls">
+        <button id="startButton">Start</button>
+        <button id="stopButton">Stop</button>
+    </div>
+
+        <!-- Detection Result -->
+        <div id="detectionResult">Result: <span id="result">None</span></div>
+    </section>
+
+    <footer>&copy; 2024 Sign Language Detection. All rights reserved.</footer>
+
+    <script>
+        const videoStream = document.getElementById('videoStream');
+        const resultSpan = document.getElementById('result');
+        const placeholderImage = document.getElementById('placeholderImage');
+
+        // Start Detection button click event
+        document.getElementById('startButton').addEventListener('click', function () {
+            videoStream.src = "{{ url_for('video_feed') }}"; // Assuming video feed URL
+            videoStream.style.display = "block";  // Show the video element
+            placeholderImage.style.display = "none"; // Hide the placeholder image
+            resultSpan.textContent = "None";
+
+            fetch('/start', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "detection started") {
+                    console.log('Started:', data.status);
+                } else {
+                    console.log('Failed to start:', data.status);
+                    alert('Failed to start detection. Try again.');
+                }
+            })
+            .catch(err => {
+                console.log('Error:', err);
+                alert('Error starting detection.');
+            });
+        });
+
+        // Stop Detection button click event
+        document.getElementById('stopButton').addEventListener('click', function () {
+            videoStream.style.display = "none";  // Hide the video element
+            videoStream.src = "";  // Clear the video feed URL
+            placeholderImage.style.display = "block";
+            resultSpan.textContent = "None";
+
+            fetch('/stop', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "detection stopped") {
+                    console.log('Stopped:', data.status);
+                } else {
+                    console.log('Failed to stop:', data.status);
+                    alert('Failed to stop detection.');
+                }
+            })
+            .catch(err => {
+                console.log('Error:', err);
+                alert('Error stopping detection.');
+            });
+        });
+
+        // Periodically update the detection result
+        setInterval(function () {
+            if (videoStream.style.display === "block") {
+                fetch('/current_result')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.result !== undefined) {
+                            resultSpan.textContent = data.result;
+                        } else {
+                            resultSpan.textContent = "Error fetching result";
+                        }
+                    })
+                    .catch(err => {
+                        console.log('Error fetching result:', err);
+                        resultSpan.textContent = "Error fetching result";
+                    });
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
+
+
+
+
+
+

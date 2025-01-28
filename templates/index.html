@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Hand Sign Language Detection</title>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('features') }}">Features</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="content">
+        <h1>Hand Sign Detection Project</h1>
+        <p>Welcome to the Hand Sign Detection project. Explore real-time sign language detection and contribute to data collection.</p>
+
+        <div>
+            
+            <button class="button" onclick="startDetectionAndNavigate()">Start Hand Sign Detection</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>&copy; 2024 Sign Language Detection. All rights reserved.</footer> 
+
+    <!-- JavaScript -->
+    <script>
+        function collectData() {
+            // Navigate to the data collection page
+            window.location.href = "{{ url_for('data_collection') }}";
+        }
+
+        function startDetectionAndNavigate() {
+            // Navigate to the real-time detection page
+            window.location.href = "{{ url_for('real_time_detection') }}";
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
